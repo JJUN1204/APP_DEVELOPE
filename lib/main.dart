@@ -31,7 +31,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  dynamic mealList = const Text('검색하세요');
+  dynamic mealList = const Text('급식을 검색하세요.');
   void showCal() async {
     var dt = await showDateRangePicker(
         context: context,
@@ -43,16 +43,22 @@ class _MainPageState extends State<MainPage> {
     var meals = await neisApi.getMeal(fromDate: fromDate, toDate: toDate);
 
     setState(() {
-      mealList = ListView.separated(
-          itemBuilder: (context, index) {
-            return ListTile(
-                title: Text(meals[index]['MLSV_YMD']),
-                subtitle: Text(meals[index]['DDISH_NM']
-                    .toString()
-                    .replaceAll('<br/>', '\n')));
-          },
-          separatorBuilder: (context, index) => const Divider(),
-          itemCount: meals.length);
+      if (meals.isEmpty) {
+        mealList = const Center(
+          child: Text('결과가 텅텅'),
+        );
+      } else {
+        mealList = ListView.separated(
+            itemBuilder: (context, index) {
+              return ListTile(
+                  title: Text(meals[index]['MLSV_YMD']),
+                  subtitle: Text(meals[index]['DDISH_NM']
+                      .toString()
+                      .replaceAll('<br/>', '\n')));
+            },
+            separatorBuilder: (context, index) => const Divider(),
+            itemCount: meals.length);
+      }
     });
   }
 
@@ -61,7 +67,7 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       body: Column(
         children: [
-          const Text('2030101'),
+          const Text('성일(정보)고등학교'),
           Expanded(child: mealList),
         ],
       ),
