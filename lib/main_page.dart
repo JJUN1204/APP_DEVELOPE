@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_movie6/kobis_api.dart';
 
+import 'movie_detail.dart';
+
 class MyWidget extends StatefulWidget {
   const MyWidget({super.key});
 
@@ -61,21 +63,36 @@ class _MainPageState extends State<MainPage> {
                   } else if (index == 2) {
                     rankColor = Colors.green;
                   }
+                  var movie = movies[index];
                   return ListTile(
                     leading: Container(
-                      color: rankColor,
-                      child: Text(movies[index]['rank']),
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: rankColor,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        movies[index]['rank'],
+                        style: const TextStyle(fontSize: 15),
+                      ),
                     ),
                     title: Text(movies[index]['movieNm']),
                     subtitle: Text('${movies[index]['audiAcc']}'),
                     trailing: const Icon(Icons.arrow_forward_ios),
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MovieDetail(
+                            movieCd: movies[index]['movieCd'],
+                          ),
+                        )),
                   );
                 },
                 separatorBuilder: (context, index) => const Divider(),
                 itemCount: movies!.length); //! 돈있다고
           } else {
             //로딩중..
-            return const CircularProgressIndicator();
+            return const Center(child: CircularProgressIndicator());
           }
         },
       );
