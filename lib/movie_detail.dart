@@ -16,7 +16,9 @@ class MovieDetail extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             var movie = snapshot.data; //['movieNm']
-            return MovieDetailView(movie: movie);
+            return MovieDetailView(
+              movie: movie,
+            );
           } else {
             var msg = '데이터 로드중입니다.';
             return Center(child: Text(msg));

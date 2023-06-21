@@ -47,4 +47,22 @@ class KobisApi {
       return [];
     }
   }
+
+  Future<dynamic> getCompanuDetail({required companyCd}) async {
+    var uri = '$_site/company/searchCompanyInfo.json';
+    uri = '$uri?key=$apiKey';
+    uri = '$uri&companyCd=$companyCd';
+    var reponse = await http.get(Uri.parse(uri));
+    if (reponse.statusCode == 200) {
+      var company = jsonDecode(reponse.body)['companyInfoResult']['companyInfo']
+          as dynamic; //var = 고정 dynamic = 바뀔수 있음
+      return company;
+      // movie[0] a[1] => 배열 , 리스트 (index=주소) 보기에 안편함...
+      // movie['name'] = 123 => dynamic
+    }
+    //에러일때
+    else {
+      return [];
+    }
+  }
 }
